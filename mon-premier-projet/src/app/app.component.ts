@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AppareilService } from './services/appareil.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   isAuth = false;
+  appareils: any[];
+
   lastUpdate = new Promise((resolve, reject) => { // fonction qui simule un appel d'API avec donc un temps de réponse
     const date = new Date();
     setTimeout(
@@ -16,20 +19,6 @@ export class AppComponent {
     );
   });
 
-  appareils = [
-    {
-      name: 'Machine à laver',
-      status: 'éteint'
-    },
-    {
-      name: 'Frigo',
-      status: 'allumé'
-    },
-    {
-      name: 'Ordinateur',
-      status: 'éteint'
-    }
-  ];
 
   posts = [
     {
@@ -46,7 +35,7 @@ export class AppComponent {
     },
   ];
 
-  constructor() {
+  constructor(private appareilService: AppareilService) {
     setTimeout(
       () => {
         this.isAuth = true;
@@ -54,7 +43,19 @@ export class AppComponent {
     );
   }
 
+  ngOnInit() {
+    this.appareils = this.appareilService.appareils;
+  }
+
   onAllumer() {
-    console.log('On allume tout !');
+    this.appareilService.switchOnAll();
+  }
+  onEteindre() {
+    if(confirm('Êtes-vous sûr de vouloir éteindre tous vos appareil ?')) {
+      this.appareilService.switchOffAll();
+    } else {
+      return null;
+    }
+    
   }
 }
