@@ -35,27 +35,8 @@ export class AppComponent implements OnInit{
     },
   ];
 
-  constructor(private appareilService: AppareilService) {
-    setTimeout(
-      () => {
-        this.isAuth = true;
-      }, 4000
-    );
-  }
+  constructor(private appareilService: AppareilService) {}
 
   ngOnInit() {
-    this.appareils = this.appareilService.appareils;
-  }
-
-  onAllumer() {
-    this.appareilService.switchOnAll();
-  }
-  onEteindre() {
-    if(confirm('Êtes-vous sûr de vouloir éteindre tous vos appareil ?')) {
-      this.appareilService.switchOffAll();
-    } else {
-      return null;
-    }
-    
   }
 }
