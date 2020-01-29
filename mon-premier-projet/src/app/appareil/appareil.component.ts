@@ -35,6 +35,7 @@ export class AppareilComponent implements OnInit {
     } else if(this.appareilStatus === 'éteint') {
       this.appareilService.switchOnOne(this.index);
     }
-}
+  }
+  
 
 }
