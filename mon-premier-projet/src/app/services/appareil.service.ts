@@ -1,3 +1,7 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Injectable()
 export class AppareilService {
     appareils = [
         {
@@ -16,6 +20,8 @@ export class AppareilService {
           status: 'éteint'
         }
       ];
+    
+    constructor(private httpClient: HttpClient) {}
     
     switchOnAll() {
         for(let appareil of this.appareils) {
@@ -54,4 +60,31 @@ export class AppareilService {
     appareilObject.id = this.appareils[(this.appareils.length - 1)].id + 1;
     this.appareils.push(appareilObject);
   }
+
+  saveAppareilsToServer() {
+    this.httpClient
+      .put('https://angular-tuto-oc-2a5c7.firebaseio.com/appareils.json', this.appareils)
+      .subscribe(
+        () => {
+          console.log('Enregistrement terminé !');
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      );
+  }
+
+  getAppareilsFromServer() {
+    this.httpClient
+      .get<any[]>('https://angular-tuto-oc-2a5c7.firebaseio.com/appareils.json')
+      .subscribe(
+        (response) => {
+          this.appareils = response;
+        },
+        (error) => {
+          console.log('erreur !:' + error);
+        }
+      );
+  }
+
 }
